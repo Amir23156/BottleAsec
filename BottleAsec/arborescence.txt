@@ -1,0 +1,140 @@
+.
+├── arborescence.txt
+├── deployments
+│   ├── attacker-docker
+│   │   └── Dockerfile
+│   ├── bash.sh
+│   ├── docker-compose.yml
+│   ├── GNS3
+│   │   └── ICSSIM-GNS3-Portable.gns3project
+│   ├── ics-docker
+│   │   └── Dockerfile
+│   ├── init.sh
+│   ├── init_sniff.sh
+│   ├── monitor-component.sh
+│   ├── start.sh
+│   └── stop.sh
+├── doc
+│   ├── another-feature.md
+│   ├── api.md
+│   ├── conf.py
+│   ├── example.py
+│   ├── icssim.md
+│   ├── index.rst
+│   ├── make.bat
+│   ├── Makefile
+│   ├── readme-copy.md
+│   ├── sample.md
+│   └── some-feature.md
+├── Images
+│   ├── architecture.png
+│   ├── architecture_prudue.png
+│   ├── class_diagram.png
+│   ├── hmi1.png
+│   ├── latency_log.png
+│   ├── latency_moving_average.png
+│   ├── Latency_plc1_loop.png
+│   ├── Latency_plc1_Response.png
+│   ├── Latency.png
+│   ├── mitm_1.png
+│   ├── mitm_2.png
+│   ├── mitm_a.png
+│   ├── mitm_b.png
+│   ├── mitm_normal.png
+│   ├── mitm.png
+│   ├── physical_process.png
+│   ├── sample_architecture.png
+│   ├── scan_nmap1.png
+│   ├── scan_nmap2.png
+│   ├── Screenshot from 2021-11-26 17-23-54.png
+│   ├── Screenshot from 2021-12-02 12-03-55.png
+│   └── wireshark.png
+├── LICENSE
+├── README.md
+└── src
+    ├── AttackerBase.py
+    ├── AttackerMachine.py
+    ├── Attacker.py
+    ├── AttackerRemote.py
+    ├── attacks
+    │   ├── command-injection.sh
+    │   ├── ddos.sh
+    │   ├── mitm
+    │   │   ├── ettercap-packets.pcap
+    │   │   ├── mitm (copy).ecf
+    │   │   ├── mitm.ecf
+    │   │   ├── mitm.ef
+    │   │   ├── mitm-INT-42.ecf
+    │   │   └── mitm.sh
+    │   ├── mitm-ettercap.sh
+    │   ├── mitm-scapy.sh
+    │   ├── replay-scapy.sh
+    │   ├── scan-ettercap.sh
+    │   ├── scan-nmap.sh
+    │   ├── scan-ping.sh
+    │   └── scan-scapy.sh
+    ├── CommandInjectionAgent.py
+    ├── Configs.py
+    ├── DDosAgent.py
+    ├── FactorySimulation.py
+    ├── HMI1.py
+    ├── HMI2.py
+    ├── HMI3.py
+    ├── ics_sim
+    │   ├── Attack
+    │   │   └── __pycache__
+    │   │       ├── ModbusCommand.cpython-310.pyc
+    │   │       ├── ModbusPackets.cpython-310.pyc
+    │   │       └── NetworkNode.cpython-310.pyc
+    │   ├── Attacks.py
+    │   ├── configs.py
+    │   ├── connectors.py
+    │   ├── Device.py
+    │   ├── helper.py
+    │   ├── ModbusCommand.py
+    │   ├── ModbusPackets.py
+    │   ├── NetworkNode.py
+    │   ├── protocol.py
+    │   ├── __pycache__
+    │   │   ├── Attacks.cpython-38.pyc
+    │   │   ├── configs.cpython-38.pyc
+    │   │   ├── connectors.cpython-38.pyc
+    │   │   ├── Device.cpython-38.pyc
+    │   │   ├── helper.cpython-38.pyc
+    │   │   └── protocol.cpython-38.pyc
+    │   └── ScapyAttacker.py
+    ├── logs
+    │   ├── attack-logs
+    │   │   ├── attacker_machine_summary.csv
+    │   │   ├── attacker_remote_summary.csv
+    │   │   └── attacker_summary.csv
+    │   ├── logs-attacker.log
+    │   ├── logs-attacker_machine.log
+    │   ├── logs-attacker_remote.log
+    │   ├── logs-Factory.log
+    │   ├── logs-HMI1.log
+    │   ├── logs-HMI2.log
+    │   ├── logs-HMI3.log
+    │   ├── logs-PLC1.log
+    │   ├── logs-PLC2.log
+    │   ├── snapshots_PLC1.csv
+    │   └── snapshots_PLC2.csv
+    ├── MqttHelper.py
+    ├── MQTTSampleConnection.txt
+    ├── PLC1.py
+    ├── PLC2.py
+    ├── __pycache__
+    │   ├── AttackerBase.cpython-38.pyc
+    │   ├── Configs.cpython-38.pyc
+    │   └── MqttHelper.cpython-38.pyc
+    ├── start.py
+    ├── start.sh
+    ├── storage
+    │   └── PhysicalSimulation1.sqlite
+    └── tests
+        ├── connectionTests.py
+        ├── modbusBaseTest.py
+        └── storage
+            └── PhysicalSimulation1.sqlite
+
+20 directories, 118 files
