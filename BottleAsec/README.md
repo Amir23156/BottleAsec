@@ -50,6 +50,12 @@ You could also see the status of containers with following command:
 ```
 sudo docker-compose ps
 ```
+#### Controlling the office WiFi bridge
+The `hmi3` service normally attaches to both the supervision network and the
+simulated office network. Set the environment variable
+`WIFI_BRIDGE_ENABLED=false` before running `docker-compose` to disable the
+office network interface and isolate HMI3 from the office network.
+
 
 ### Operating the control system and apply cyberattacks
 In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container.

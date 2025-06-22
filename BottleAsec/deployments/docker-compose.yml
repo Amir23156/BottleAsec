@@ -96,6 +96,7 @@ services:
     privileged: true
     working_dir: /src
     entrypoint: ["./start.sh", "HMI3.py"]
+    entrypoint: ["./start_hmi3.sh"]
     container_name: hmi3
     volumes:
       - ../src:/src
