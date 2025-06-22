@@ -114,6 +114,7 @@ services:
       - WIFI_BRIDGE_ENABLED=true
       - HMI3_ADMIN_PASS=Admin#2025!
       - HMI3_OPERATOR_PASS=Operator#2025!
+      - HARDEN_PORTS=true
     cap_add:
       - NET_ADMIN
 
@@ -135,6 +136,7 @@ services:
         ipv4_address: 192.168.2.10
     environment:
       - PC_ROLE=administrative
+      - HARDEN_PORTS=true
 
   office_pc2:
     build: ics-docker/.
@@ -151,6 +153,7 @@ services:
         ipv4_address: 192.168.2.11
     environment:
       - PC_ROLE=technical
+      - HARDEN_PORTS=true
 
   # Point d'accès WiFi simulé
   wifi_access_point:
