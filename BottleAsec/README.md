@@ -56,6 +56,11 @@ simulated office network. Set the environment variable
 `WIFI_BRIDGE_ENABLED=false` before running `docker-compose` to disable the
 office network interface and isolate HMI3 from the office network.
 
+#### Hardened HMI3 authentication
+HMI3 now requires strong credentials defined by the environment variables
+`HMI3_ADMIN_PASS` and `HMI3_OPERATOR_PASS`. Legacy accounts are disabled and
+login attempts are limited. After three failures, authentication is blocked for
+30 seconds.
 
 ### Operating the control system and apply cyberattacks
 In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container.

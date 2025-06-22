@@ -112,6 +112,8 @@ services:
     environment:
       - BOTTLEASEC_MODE=emergency
       - WIFI_BRIDGE_ENABLED=true
+      - HMI3_ADMIN_PASS=Admin#2025!
+      - HMI3_OPERATOR_PASS=Operator#2025!
     cap_add:
       - NET_ADMIN
 

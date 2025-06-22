@@ -24,10 +24,24 @@ class HMI3(HMI):
             "marie_dupont": "admin2023", # Ancienne ingénieure
             "test_user": "test"          # Compte test oublié
         }
+        # Comptes autorisés avec mots de passe forts (hashés)
+        self.users = {
+            "admin": self._hash_password(os.getenv("HMI3_ADMIN_PASS", "Admin#2025!")),
+            "operator": self._hash_password(os.getenv("HMI3_OPERATOR_PASS", "Operator#2025!")),
+        }
+        
+
+        # Comptes legacy désactivés
+        self.disabled_accounts = ["john_smith", "marie_dupont", "test_user"]
         
         self.current_user = None
         self.authenticated = False
         self.emergency_access = False
+        self.failed_attempts = 0
+        self.locked_until = 0
+
+    def _hash_password(self, password: str) -> str:
+        return hashlib.sha256(password.encode()).hexdigest()
 
     def _before_start(self):
         """Authentification simple à la ICSSIM"""
@@ -59,6 +73,11 @@ class HMI3(HMI):
                 print("❌ Échec authentification")
                 # VULNÉRABILITÉ : Pas de limitation tentatives
                 print("🔄 Nouvelle tentative autorisée...")
+                if time.time() < self.locked_until:
+                    remaining = int(self.locked_until - time.time())
+                    print(f"🔒 Nouvelle tentative bloquée pendant {remaining}s")
+                else:
+                    print("🔄 Nouvelle tentative autorisée...")
 
     def _display(self):
         """Interface principale - Style ICSSIM"""
@@ -217,6 +236,28 @@ class HMI3(HMI):
         # VULNÉRABILITÉ : Pas de protection force brute
         # VULNÉRABILITÉ : Comptes legacy actifs
         return username in self.legacy_users and self.legacy_users[username] == password
+        """Authentification renforcée avec verrouillage et comptes désactivés"""
+
+        now = time.time()
+        if now < self.locked_until:
+            return False
+
+        if username in self.disabled_accounts:
+            print("🚫 Compte legacy désactivé")
+            return False
+
+        hashed = self._hash_password(password)
+        if username in self.users and self.users[username] == hashed:
+            self.failed_attempts = 0
+            return True
+        else:
+            self.failed_attempts += 1
+            if self.failed_attempts >= 3:
+                self.locked_until = now + 30
+                self.failed_attempts = 0
+                print("🔒 Trop d'échecs - connexion bloquée 30s")
+            return False
+
 
 
 if __name__ == '__main__':
