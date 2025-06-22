@@ -124,29 +124,80 @@ class BottleAsecValidator:
         # Test 3: Routage transitif (simulation)
         bridge_exploitable = office_to_hmi3 and hmi3_to_supervision
         print(f"   🚨 Pont exploitable:   {'✅ OUI' if bridge_exploitable else '❌ NON'}")
-        
         if bridge_exploitable:
             print("   ⚠️  VULNÉRABILITÉ CONFIRMÉE: Accès indirect Bureau → Supervision")
-        
+         
         self.results['wifi_bridge_vuln'] = bridge_exploitable
+ 
+     def test_hmi3_legacy_accounts(self):
+         """Test 3: Comptes legacy HMI3"""
+         print("\n👤 [TEST 3] Comptes Legacy HMI3")
+         print("-" * 40)
+         
+         # Simulation test comptes anciens employés
+         legacy_accounts = [
+             ('john_smith', '123456', 'Ancien chef maintenance'),
+             ('marie_dupont', 'admin2023', 'Ancienne ingénieure procédé'),
+             ('test_user', 'test', 'Compte test oublié')
+         ]
+         
+         print("🔐 Test authentification comptes legacy...")
+         
+         vulnerable_accounts = 0
+         for username, password, description in legacy_accounts:
+             # Simulation test authentification
+             accessible = self._simulate_hmi3_login(username, password)
+             status = "🚨 ACCESSIBLE" if accessible else "✅ BLOQUÉ"
+-            print(f"
++            print(f"   {username:12} ({description:35}) : {status}")
++            if accessible:
++                vulnerable_accounts += 1
++
++        print(f"\n   ➡️  {vulnerable_accounts} compte(s) accessible(s) sur {len(legacy_accounts)}")
++        self.results['legacy_accounts'] = vulnerable_accounts
++
++    def test_modbus_insecure(self):
++        """Test 4: Communication Modbus non sécurisée (simulation)"""
++        print("\n🔌 [TEST 4] Modbus Non Sécurisé")
++        print("-" * 40)
++        print("⚠️  Simulation non implémentée")
++        self.results['modbus_insecure'] = False
++
++    def test_external_threat_scenario(self):
++        """Test 5: Scénario de menace externe (simulation)"""
++        print("\n🌐 [TEST 5] Menace Externe")
++        print("-" * 40)
++        print("⚠️  Simulation non implémentée")
++        self.results['external_threat'] = False
++
++    def test_internal_threat_scenario(self):
++        """Test 6: Scénario de menace interne (simulation)"""
++        print("\n🏭 [TEST 6] Menace Interne")
++        print("-" * 40)
++        print("⚠️  Simulation non implémentée")
++        self.results['internal_threat'] = False
++
++    def generate_report(self):
++        """Affiche un rapport synthétique des résultats"""
++        print("\n📋 RAPPORT FINAL")
++        print("=" * 40)
++        for test, result in self.results.items():
++            print(f"{test}: {result}")
++        duration = datetime.now() - self.start_time
++        print(f"Durée totale: {duration}")
++
++    def _simulate_hmi3_login(self, username, password):
++        """Simulation basique d'authentification"""
++        # Les comptes contenant 'test' ou le mot de passe '123456' sont considérés comme vulnérables
++        return 'test' in username or password == '123456'
++
++    def _test_connectivity(self, ip):
++        """Simulation basique de test de connectivité"""
++        return True
++
++
++if __name__ == '__main__':
++    validator = BottleAsecValidator()
++    validator.run_all_tests()
++
 
-    def test_hmi3_legacy_accounts(self):
-        """Test 3: Comptes legacy HMI3"""
-        print("\n👤 [TEST 3] Comptes Legacy HMI3")
-        print("-" * 40)
-        
-        # Simulation test comptes anciens employés
-        legacy_accounts = [
-            ('john_smith', '123456', 'Ancien chef maintenance'),
-            ('marie_dupont', 'admin2023', 'Ancienne ingénieure procédé'),
-            ('test_user', 'test', 'Compte test oublié')
-        ]
-        
-        print("🔐 Test authentification comptes legacy...")
-        
-        vulnerable_accounts = 0
-        for username, password, description in legacy_accounts:
-            # Simulation test authentification
-            accessible = self._simulate_hmi3_login(username, password)
-            status = "🚨 ACCESSIBLE" if accessible else "✅ BLOQUÉ"
-            print(f"
