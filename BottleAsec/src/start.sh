@@ -3,6 +3,15 @@
 #cd src
 
 name="$1"
+
+# Optionally harden the container by closing common unused ports
+if [ "$HARDEN_PORTS" = "true" ]; then
+    echo "[HARDEN] Closing unused service ports"
+    iptables -A INPUT -p tcp --dport 23 -j DROP  # Telnet
+    iptables -A INPUT -p tcp --dport 11211 -j DROP  # Memcached
+    iptables -A INPUT -p tcp --dport 80 -j DROP   # HTTP
+fi
+
 if [ -z "$1" ]
 then
       echo "start command need module_name to initiate!"
