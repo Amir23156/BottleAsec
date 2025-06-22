@@ -17,3 +17,5 @@ src/storage/*
 !src/storage/.gitignore
 
 
+**/__pycache__/
+*.pyc

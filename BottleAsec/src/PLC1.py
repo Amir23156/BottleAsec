@@ -14,9 +14,22 @@ class PLC1(PLC):
         self.last_emergency_time = 0
         self.emergency_timeout = 30  # 30 secondes timeout pour commandes d'urgence
 
+        # Seuil de sécurité du capteur indépendant
+        self.safety_trip_level = 8.5
+
+        # Mémoriser les limites de sécurité pour détecter les modifications
+        self.last_tank_max = TAG.TAG_LIST[TAG.TAG_TANK_LEVEL_MAX]['default']
+        self.last_bottle_max = TAG.TAG_LIST[TAG.TAG_BOTTLE_LEVEL_MAX]['default']
+
     def _logic(self):
         # BOTTLEASEC : Vérifier si des commandes d'urgence sont actives
         self._check_emergency_override()
+
+        # Vérifier modifications des limites de sécurité
+        self._detect_safety_limit_changes()
+
+        # Capteur indépendant de niveau critique
+        self._independent_safety_check()
         
         #  update TAG.TAG_TANK_INPUT_VALVE_STATUS
         if not self._check_manual_input(TAG.TAG_TANK_INPUT_VALVE_MODE, TAG.TAG_TANK_INPUT_VALVE_STATUS):
@@ -75,6 +88,27 @@ class PLC1(PLC):
         if self.emergency_override and (current_time - self.last_emergency_time) > self.emergency_timeout:
             self.emergency_override = False
             self.report("BOTTLEASEC: Emergency override timeout - Returning to normal operation", logging.INFO)
+
+    def _detect_safety_limit_changes(self):
+        """Surveille les modifications des limites de sécurité"""
+        tank_max = self._get(TAG.TAG_TANK_LEVEL_MAX)
+        bottle_max = self._get(TAG.TAG_BOTTLE_LEVEL_MAX)
+
+        if tank_max != self.last_tank_max:
+            self.report(f"BOTTLEASEC: Safety limit tank_max changed {self.last_tank_max} -> {tank_max}", logging.WARNING)
+            self.last_tank_max = tank_max
+
+        if bottle_max != self.last_bottle_max:
+            self.report(f"BOTTLEASEC: Safety limit bottle_max changed {self.last_bottle_max} -> {bottle_max}", logging.WARNING)
+            self.last_bottle_max = bottle_max
+
+    def _independent_safety_check(self):
+        """Capteur indépendant : déclenche vidange si niveau critique"""
+        level = self._get(TAG.TAG_TANK_LEVEL_VALUE)
+        if level >= self.safety_trip_level:
+            self.report("BOTTLEASEC: Independent level sensor TRIPPED", logging.CRITICAL)
+            self._set(TAG.TAG_TANK_INPUT_VALVE_STATUS, 0)
+            self._set(TAG.TAG_TANK_OUTPUT_VALVE_STATUS, 1)
 
     def _post_logic_update(self):
         super()._post_logic_update()

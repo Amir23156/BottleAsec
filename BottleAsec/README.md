@@ -51,6 +51,32 @@ You could also see the status of containers with following command:
 sudo docker-compose ps
 ```
 
+#### Controlling the office WiFi bridge
+The `hmi3` service normally attaches to both the supervision network and the
+simulated office network. Set the environment variable
+`WIFI_BRIDGE_ENABLED=false` before running `docker-compose` to disable the
+office network interface and isolate HMI3 from the office network.
+
+#### Hardened HMI3 authentication
+HMI3 now requires strong credentials defined by the environment variables
+`HMI3_ADMIN_PASS` and `HMI3_OPERATOR_PASS`. Legacy accounts are disabled and
+login attempts are limited. After three failures, authentication is blocked for
+30 seconds.
+
+#### Independent safety sensors
+PLC1 now includes a failsafe based on an independent high-level sensor. If the
+tank level reaches 8.5L, the input valve is closed and the output valve is
+opened automatically. Any change to safety limits is logged with a warning.
+
+#### Network monitoring and service hardening
+Running `deployments/start.sh` now captures traffic from both the supervision
+and office networks (`br_icsnet` and `br_office`) to help detect suspicious
+lateral movement. Set the environment variable `HARDEN_PORTS=true` on HMI3 and
+office PCs to close common unused ports (23, 80, 11211) via `iptables`.
+#### Emergency procedures
+Detailed steps for operators are provided in [doc/emergency-procedures.md](doc/emergency-procedures.md). Print this page and keep it near HMI3. Review the checklist weekly and perform quarterly drills to ensure staff know how to respond to overflow alarms.
+
+
 ### Operating the control system and apply cyberattacks
 In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container.
 

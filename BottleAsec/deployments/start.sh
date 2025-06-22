@@ -13,6 +13,8 @@ sudo docker-compose up -d
 printStep 'DOCKER_COMPOSE UP'
 sudo docker-compose ps
 
-sudo tcpdump -w traffic.pcap -i br_icsnet
+# Capture traffic on both networks to monitor lateral movement
+sudo tcpdump -w ics_traffic.pcap -i br_icsnet &
+sudo tcpdump -w office_traffic.pcap -i br_office
 
 
