@@ -62,6 +62,11 @@ HMI3 now requires strong credentials defined by the environment variables
 login attempts are limited. After three failures, authentication is blocked for
 30 seconds.
 
+#### Independent safety sensors
+PLC1 now includes a failsafe based on an independent high-level sensor. If the
+tank level reaches 8.5L, the input valve is closed and the output valve is
+opened automatically. Any change to safety limits is logged with a warning.
+
 ### Operating the control system and apply cyberattacks
 In the directory [deployments](deployments/) there exist some scripts such as [hmi1.sh](deployments/hmi1.sh), [hmi2.sh](deployments/hmi2.sh) or [attacker.sh](deployments/attacker.sh) which can attach user to the container.
 
